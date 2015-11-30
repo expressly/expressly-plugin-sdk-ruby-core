@@ -1,8 +1,50 @@
 module Expressly
+  class CustomerImport
+    attr_accessor :metadata, :primary_email, :customer, :cart
+    
+    def initialize(attribute_value_map = {})
+      attribute_value_map.map { |(k, v)| public_send("#{k}=", v) }
+      self.freeze
+    end
+    
+    def ==(object)
+      ObjectHelper.equals(self,object)
+    end
+
+    def self.from_json(json)
+      puts json['migration']['cart']
+      CustomerImport.new({
+        :metadata => json['migration']['meta'],
+        :primary_email => json['migration']['data']['email'],
+        :customer => Customer.from_json(json['migration']['data']['customerData']),
+        :cart => Cart.from_json(json['cart'])})
+    end
+  end
+  
+  class Cart
+    attr_accessor :coupon_code, :product_id
+
+    def initialize(attribute_value_map = {})
+      attribute_value_map.map { |(k, v)| public_send("#{k}=", v) }
+      self.freeze
+    end
+    
+    def ==(object)
+      ObjectHelper.equals(self,object)
+    end
+
+    def self.from_json(json)
+      if json.nil? then return nil end
+      Cart.new({
+        :coupon_code => json['couponCode'],
+        :product_id => json['productId']})
+    end
+  end
+  
   class Customer
     attr_accessor :first_name, :last_name, :gender, :billing_address_index, :shipping_address_index,
     :company_name, :date_of_birth, :tax_number, :last_updated,
-    :online_identity_list, :phone_number_list, :email_address_list, :address_list,
+    :online_identity_list, :phone_list, :email_list, :address_list,
     :last_order_date, :number_of_orders
     def initialize(attribute_value_map = {})
       attribute_value_map.map { |(k, v)| public_send("#{k}=", v) }
@@ -10,7 +52,7 @@ module Expressly
     end
 
     def gender=(gender)
-      Gender::assertValidValue(type)
+      Gender::assertValidValue(gender)
       @gender = gender
     end
 
@@ -19,10 +61,6 @@ module Expressly
     end
 
     def self.from_json(json)
-      phone_number_list = ''
-      email_address_list = ''
-      address_list = ''
-
       Customer.new({
         :first_name => json['firstName'],
         :last_name => json['lastName'],
@@ -30,26 +68,30 @@ module Expressly
         :billing_address_index => json['billingAddress'].to_i,
         :shipping_address_index => json['shippingAddress'].to_i,
         :company_name => json['company'],
-        :date_of_birth => json['dob'],
+        :date_of_birth => safe_date_parse(json['dob']),
         :tax_number => json['taxNumber'],
-        :last_updated => json['dateUpdated'],
+        :last_updated => safe_date_parse(json['dateUpdated']),
 
         :online_identity_list => OnlineIdentity.from_json_list(json['onlinePresence']),
-        :phone_number_list => PhoneNumber.from_json_list(json['phones']),
-        :email_address_list => EmailAddress.from_json_list(json['emails']),
-        :address_list => PhoneNumber.from_json_list(json['addresses']),
+        :phone_list => Phone.from_json_list(json['phones']),
+        :email_list => EmailAddress.from_json_list(json['emails']),
+        :address_list => Address.from_json_list(json['addresses']),
 
-        :last_order_date => json['dateLastOrder'],
+        :last_order_date => safe_date_parse(json['dateLastOrder']),
         :number_of_orders => json['numberOrdered'].to_i
       })
     end
+    
+    def self.safe_date_parse(date)
+      date.nil? ? nil : Date.parse(date)
+    end
 
-    def to_json()
+    def to_json(state = nil)
       JSON.generate({
         :firstName => @first_name,
         :lastName => @last_name,
         :gender => @gender,
-        :shippingAddress => @billing_address_index,
+        :billingAddress => @billing_address_index,
         :shippingAddress => @shipping_address_index,
         :company => @company_name,
         :dob => @date_of_birth,
@@ -58,8 +100,8 @@ module Expressly
         :dateUpdated => @last_updated,
         :dateLastOrder => @last_order_date,
         :numberOrdered => @number_of_orders,
-        :emails => @email_address_list,
-        :phones => @phone_number_list,
+        :emails => @email_list,
+        :phones => @phone_list,
         :addresses => @address_list
       })
     end
@@ -112,7 +154,7 @@ module Expressly
       return list
     end
     
-    def to_json()
+    def to_json(state = nil)
       JSON.generate({
         :firstName => @first_name,
         :lastName => @last_name,
@@ -129,7 +171,7 @@ module Expressly
     end
   end
 
-  class PhoneNumber
+  class Phone
     include Expressly::Helper
     attr_accessor  :type, :number, :country_code
     def initialize(attribute_value_map = {})
@@ -138,7 +180,7 @@ module Expressly
     end
 
     def type=(type)
-      PhoneNumberType::assertValidValue(type)
+      PhoneType::assertValidValue(type)
       @type = type
     end
 
@@ -154,7 +196,7 @@ module Expressly
     end
 
     def self.from_json(json)
-      PhoneNumber.new({
+      Phone.new({
         :type => json['type'],
         :number => json['number'],
         :country_code => json['countryCode'].to_i
@@ -166,12 +208,12 @@ module Expressly
       
       list = []
       json.each do |entity|
-        list << PhoneNumber.from_json(entity)
+        list << Phone.from_json(entity)
       end
       return list
     end
     
-    def to_json()
+    def to_json(state = nil)
       JSON.generate({
         :type => @type.to_s,
         :number => @number,
@@ -180,7 +222,7 @@ module Expressly
     end
   end
 
-  class PhoneNumberType < Enumeration
+  class PhoneType < Enumeration
     self.add_item(:Mobile, "M")
     self.add_item(:Home, "H")
     self.add_item(:Work, "W")
@@ -189,7 +231,7 @@ module Expressly
   end
 
   class EmailAddress
-    attr_accessor  :email_address, :alias
+    attr_accessor  :email, :alias
     def initialize(attribute_value_map = {})
       attribute_value_map.map { |(k, v)| public_send("#{k}=", v) }
       self.freeze
@@ -201,7 +243,7 @@ module Expressly
 
     def self.from_json(json)
       EmailAddress.new({
-        :email_address => json['emailAddress'],
+        :email => json['email'],
         :alias => json['alias']
       })
     end
@@ -216,9 +258,9 @@ module Expressly
       return list
     end
 
-    def to_json()
+    def to_json(state = nil)
       JSON.generate({
-        :emailAddress => @email_address,
+        :email => @email,
         :alias => @alias
       })
     end
@@ -257,12 +299,13 @@ module Expressly
       return list
     end
 
-    def to_json()
+    def to_json(state = nil)
       JSON.generate({
-        :field => @type.to_s,
-        :value => @identity
+        :field => type.to_s,
+        :value => identity
       })
     end
+
   end
 
   class OnlineIdentityType < Enumeration

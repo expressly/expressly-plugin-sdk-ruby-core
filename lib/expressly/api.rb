@@ -38,7 +38,7 @@ module Expressly
       response = execute(
         "/v2/migration/#{campaign_customer_uuid}/user", 
         'GET')
-      return JSON.parse(response.body)
+      return CustomerImport.from_json(JSON.parse(response.body))
     end
 
     def confirm_migration_success?(campaign_customer_uuid)

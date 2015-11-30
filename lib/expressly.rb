@@ -10,6 +10,5 @@ require 'logger'
 
 require 'expressly/version'
 require 'expressly/util'
+require 'expressly/domain'
 require 'expressly/api'
-require 'expressly/api/base'
-require 'expressly/api/request'
