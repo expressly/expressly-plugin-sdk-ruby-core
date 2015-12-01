@@ -12,3 +12,10 @@ require 'expressly/version'
 require 'expressly/util'
 require 'expressly/domain'
 require 'expressly/api'
+
+begin
+  require 'expressly/engine'
+rescue NameError
+  Expressly.logger.warn('expressly') { 
+    "skipping loading of the expressly rails engine" }
+end
