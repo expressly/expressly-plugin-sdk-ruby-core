@@ -12,15 +12,18 @@ module Expressly
     # * +apiKey+ - your expressly api key 
     # * +provider+ - your MerchantPluginProvider implementation
     #
-    def initialize(apiKey, provider) 
+    def initialize(apiKey, api, provider) 
       @apiKey = apiKey
+      @api = api
       @provider = provider
       @expectedAuthorizationHeader = 'Basic ' + Base64.encode64(apiKey)
-      print @expectedAuthorizationHeader
       self.freeze        
     end
     
-    def rout
+    def route(requestMethod, requestUri, requestBody)
+    end
+    
+    def ping()
     end
     
   end

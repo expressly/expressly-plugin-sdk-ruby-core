@@ -7,7 +7,7 @@ module Expressly
       entityMap = {
         :metadata => {:sender => 'me'},
         :primary_email => 'p@test.com',
-        :cart => Cart.new( { :coupon_code => 'coupon', :product_id => 'product'}),   
+        :cart => Cart.new( { :coupon_code => 'coupon', :product_id => 'product'}),
         :customer => Customer.new({:first_name => 'adam'})
       }
       entity = CustomerImport.new(entityMap)
@@ -18,26 +18,51 @@ module Expressly
     it "can be constructed from the json payload and generate a payload" do
       payload = JSON.generate( {
         :migration => {
-          :meta => { :sender => 'me' },
-          :data => {
-            :email => 'p@test.com',
-            :customerData => {
-              :firstName => 'adam'
-            }
-          }
+        :meta => { :sender => 'me' },
+        :data => {
+        :email => 'p@test.com',
+        :customerData => {
+        :firstName => 'adam'
+        }
+        }
         },
         :cart => {
-          :couponCode => 'coupon', 
-          :productId => 'product'
+        :couponCode => 'coupon',
+        :productId => 'product'
         }
       })
-        
+
       entity = CustomerImport.from_json(JSON.parse(payload))
       entity.metadata['sender'].should == 'me'
       entity.primary_email.should == 'p@test.com'
       entity.customer.first_name.should == 'adam'
       entity.cart.coupon_code == 'coupon'
       entity.cart.product_id.should == 'product'
+    end
+  end
+
+  describe "CustomerExport" do
+    it "initialises correctly using a hashmap and be immutable once initialised" do
+      entityMap = {
+        :metadata => {:sender => 'me'},
+        :primary_email => 'p@test.com',
+        :customer => Customer.new({:first_name => 'adam'})
+      }
+      entity = CustomerExport.new(entityMap)
+      entityMap.map { |(k, v)| entity.public_send("#{k}").should == v }
+      expect { entity.primary_email = '2345@test.com' }.to raise_error
+    end
+
+    it "can generate the json payload" do
+      entityMap = {
+        :metadata => {:sender => 'me'},
+        :primary_email => 'p@test.com',
+        :customer => Customer.new({:first_name => 'adam'})
+      }
+      payload = JSON.parse(CustomerExport.new(entityMap).to_json())
+      payload['meta']['sender'].should == 'me'
+      payload['data']['email'].should == 'p@test.com'
+      payload['data']['customerData']['firstName'].should == 'adam'
     end
   end
 
@@ -53,7 +78,7 @@ module Expressly
       entity = Cart.new(entityMap)
       expect { entity.coupon_code = '2345' }.to raise_error
     end
-    
+
     it "can be constructed from the json payload and generate a payload" do
       payload = JSON.generate({ :couponCode => 'coupon', :productId => 'product' })
       entity = Cart.from_json(JSON.parse(payload))
@@ -61,7 +86,7 @@ module Expressly
       entity.product_id.should == 'product'
     end
   end
-  
+
   describe "Phone" do
     it "initialises correctly using a hashmap" do
       entityMap = { :type => PhoneType::Work, :number => '1234', :country_code => 44 }
@@ -178,7 +203,7 @@ module Expressly
         :company_name => 'Company',
         :date_of_birth => Date.parse('1975-08-14'),
         :tax_number => 'Tax#',
-        :last_updated => Date.parse('2015-08-14'),
+        :last_updated => DateTime.now,
 
         :online_identity_list => [
         OnlineIdentity.new({ :type => OnlineIdentityType::Twitter, :identity => '@ev' }),
@@ -201,7 +226,7 @@ module Expressly
       }
       entity = Customer.new(entityMap)
       entityMap.map { |(k, v)| entity.public_send("#{k}").should == v }
-      
+
       expect { entity.first_name = 'Donald' }.to raise_error
       entity.should == Customer.new(entityMap)
     end
@@ -225,27 +250,27 @@ module Expressly
         :company => 'Company',
         :dob => '1975-08-14',
         :taxNumber => 'Tax#',
-        :dateUpdated => '2015-08-14',
+        :dateUpdated => '2015-08-14T08:00:00',
 
         :onlinePresence => [
-          { :field => 'twitter', :value => '@ev' },
-          { :field => 'facebook', :value => 'fb.ev' }],
+        { :field => 'twitter', :value => '@ev' },
+        { :field => 'facebook', :value => 'fb.ev' }],
 
         :phones => [
-          { :type => 'W', :number => '12345' },
-          { :type => 'M', :number => '56789' }],
+        { :type => 'W', :number => '12345' },
+        { :type => 'M', :number => '56789' }],
 
         :emails => [
-          { :email => 'm@test.com', :alias => 'personal' },
-          { :email => 'w@test.com', :alias => 'work' } ],
+        { :email => 'm@test.com', :alias => 'personal' },
+        { :email => 'w@test.com', :alias => 'work' } ],
 
         :addresses => [
-          {:firstName => 'f1', :address1 => 'one'},
-          {:firstName => 'f2', :address1 => 'two'}],
+        {:firstName => 'f1', :address1 => 'one'},
+        {:firstName => 'f2', :address1 => 'two'}],
 
         :dateLastOrder => '2015-09-14',
         :numberOrdered => 2 })
-        
+
       entity = Customer.from_json(JSON.parse(payload))
       entity.first_name.should == 'First'
       entity.last_name.should == 'Last'
@@ -255,7 +280,7 @@ module Expressly
       entity.company_name.should == 'Company'
       entity.date_of_birth.should == Date.parse('1975-08-14')
       entity.tax_number.should == 'Tax#'
-      entity.last_updated.should == Date.parse('2015-08-14')
+      entity.last_updated.should == DateTime.parse('2015-08-14T08:00:00')
       entity.last_order_date.should == Date.parse('2015-09-14')
       entity.number_of_orders.should == 2
 
@@ -263,7 +288,7 @@ module Expressly
       entity.phone_list.length.should == 2
       entity.email_list.length.should == 2
       entity.address_list.length.should == 2
-      
+
       entityCopy = Customer.from_json(JSON.parse(entity.to_json))
       entity.should == entityCopy
     end
@@ -405,6 +430,168 @@ module Expressly
       entityCopy = Address.from_json(JSON.parse(entity.to_json))
       entity.should == entityCopy
     end
+  end
+
+  describe "CustomerStatuses" do
+    it "initialises correctly and emails can be added" do
+      entity = CustomerStatuses.new()
+      entity.add_existing("e1@test.com")
+      entity.add_existing("e2@test.com")
+      entity.add_pending("p1@test.com")
+      entity.add_deleted("d1@test.com")
+
+      entity.existing.should == ["e1@test.com", "e2@test.com"]
+      entity.pending.should == ["p1@test.com"]
+      entity.deleted.should == ["d1@test.com"]
+    end
+  end
+
+  describe "CustomerInvoiceRequest" do
+    it "initialises correctly" do
+      entity = CustomerInvoiceRequest.new("m@test.com", "2015-06-12", "2015-07-12")
+      entity.email.should == "m@test.com"
+      entity.from.should == Date.parse("2015-06-12")
+      entity.to.should == Date.parse("2015-07-12")
+    end
+
+    it "can be constructed from the json payload and generate a payload" do
+      payload = JSON.generate({ :email => 'm@test.com', :from => '2015-06-12', :to => '2015-07-12' })
+      entity = CustomerInvoiceRequest.from_json(JSON.parse(payload))
+      entity.email.should == "m@test.com"
+      entity.from.should == Date.parse("2015-06-12")
+      entity.to.should == Date.parse("2015-07-12")
+    end
+
+    it "can be constructed from the json list payload" do
+      payload = JSON.generate([
+        { :email => 'm@test.com', :from => '2015-06-12', :to => '2015-07-12' },
+        { :email => 'n@test.com', :from => '2016-06-12', :to => '2016-07-12' }])
+
+      entity_list = CustomerInvoiceRequest.from_json_list(JSON.parse(payload))
+      entity_list[0].email.should == "m@test.com"
+      entity_list[0].from.should == Date.parse("2015-06-12")
+      entity_list[0].to.should == Date.parse("2015-07-12")
+      entity_list[1].email.should == "n@test.com"
+      entity_list[1].from.should == Date.parse("2016-06-12")
+      entity_list[1].to.should == Date.parse("2016-07-12")
+    end
+
+    it "nil json list payload produces an empty list" do
+      entity_list = CustomerInvoiceRequest.from_json_list(nil)
+      entity_list.length.should == 0
+    end
+
+  end
+
+  describe "CustomerOrder" do
+    it "initialises correctly" do
+      entity_map = {
+        :order_id => 'orderid',
+        :order_date => '2015-08-14',
+        :item_count => 5,
+        :coupon_code => 'coupon',
+        :currency => 'GBP',
+        :pre_tax_total => 100.15,
+        :post_tax_total => 120.65,
+        :tax => 20.50 }
+      entity = CustomerOrder.new(entity_map)
+      entity.order_id.should == "orderid"
+      entity.order_date.should == Date.parse("2015-08-14")
+      entity.item_count.should == 5
+      entity.coupon_code.should == "coupon"
+      entity.currency.should == "GBP"
+      entity.pre_tax_total.should == 100.15
+      entity.post_tax_total.should == 120.65
+      entity.tax.should == 20.50
+    end
+
+    it "it can generate the expected json payload" do
+      entity_map = {
+        :order_id => 'orderid',
+        :order_date => '2015-08-14',
+        :item_count => "5",
+        :coupon_code => 'coupon',
+        :currency => 'GBP',
+        :pre_tax_total => '100.15',
+        :post_tax_total => '120.65',
+        :tax => '20.50' }
+      json = CustomerOrder.new(entity_map).to_json()
+      payload = JSON.parse(json)
+
+      payload['id'].should == "orderid"
+      payload['date'].should == "2015-08-14"
+      payload['itemCount'].should == 5
+      payload['coupon'].should == "coupon"
+      payload['currency'].should == "GBP"
+      payload['preTaxTotal'].should == 100.15
+      payload['postTaxTotal'].should == 120.65
+      payload['tax'].should == 20.50
+    end
+
+  end
+
+  describe "CustomerInvoice" do
+    it "initialises correctly" do
+      entity = CustomerInvoice.new('email@test.com')
+      entity.email.should == 'email@test.com'
+    end
+
+    it "it can generate the expected json payload" do
+      entity = CustomerInvoice.new('email@test.com')
+
+      entity.add_order(CustomerOrder.new({
+        :order_id => 'orderid',
+        :order_date => '2015-08-14',
+        :item_count => 5,
+        :coupon_code => 'coupon',
+        :currency => 'GBP',
+        :pre_tax_total => '100.15',
+        :post_tax_total => '120.65',
+        :tax => '20.50' }))
+
+      entity.add_order(CustomerOrder.new({
+        :order_id => 'orderid1',
+        :order_date => '2015-08-14',
+        :item_count => 2,
+        :coupon_code => 'coupon',
+        :currency => 'GBP',
+        :pre_tax_total => '50.15',
+        :post_tax_total => '60.65',
+        :tax => '10.50' }))
+
+      payload = JSON.parse(entity.to_json())
+      payload['email'].should == 'email@test.com'
+      payload['orderCount'].should == 2
+      payload['preTaxTotal'].should == 150.30
+      payload['postTaxTotal'].should == 181.30
+      payload['tax'].should == 31.0
+
+      order1 = payload['orders'][0]
+      order1['id'].should == "orderid"
+      order1['date'].should == "2015-08-14"
+      order1['itemCount'].should == 5
+      order1['coupon'].should == "coupon"
+      order1['currency'].should == "GBP"
+      order1['preTaxTotal'].should == 100.15
+      order1['postTaxTotal'].should == 120.65
+      order1['tax'].should == 20.50
+
+      order2 = payload['orders'][1]
+      order2['id'].should == "orderid1"
+      order2['date'].should == "2015-08-14"
+      order2['itemCount'].should == 2
+      order2['coupon'].should == "coupon"
+      order2['currency'].should == "GBP"
+      order2['preTaxTotal'].should == 50.15
+      order2['postTaxTotal'].should == 60.65
+      order2['tax'].should == 10.50
+
+      payload_list = JSON.parse(CustomerInvoice.to_json_from_list([entity, entity]))
+      payload_list['invoices'].length.should == 2
+      payload_list['invoices'][0]['postTaxTotal'].should == 181.30
+      payload_list['invoices'][0]['orders'][0]['id'].should == 'orderid'
+    end
+
   end
 
 end
