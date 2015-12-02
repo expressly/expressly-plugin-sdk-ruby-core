@@ -1,9 +1,12 @@
 module Expressly
+  ##
+  # This "interface" should be "implemented" by you and provided
+  # to the Expressly::Configuration constructor. It is the bridge
+  # between the expressly domain and your platform.
+  #
   class MerchantPluginProvider
     include AbstractInterface
-    ##
-    # Some documentation on the popup_handler method
-    #
+    
     def popup_handler(controller, campaign_customer_uuid)
       MerchantPluginProvider.api_not_implemented(self)
     end
@@ -48,9 +51,6 @@ module Expressly
       MerchantPluginProvider.api_not_implemented(self)
     end
 
-  end
-
-  class TestAbstract < MerchantPluginProvider
   end
 
 end

@@ -6,27 +6,7 @@ module Expressly
     end
   end
 
-  class Error < StandardError; end
-    
-  ##
-  # Utility class for objects
-  #
   class ObjectHelper
-   
-    ##
-    # Reflection based equality method. Produces transative equality based
-    # on object types and variables.
-    #
-    # == Args
-    #
-    # * +this+ - object to compare against 
-    # * +that+ - object to compare to
-    #
-    # == Returns
-    # 
-    # true if both objects are the of the same type and all set variables on either
-    # equal the other
-    #
     def ObjectHelper.equals(this, that)
       if this.equal?(that) then return true end
       if !this.instance_of?(that.class) then return false end
@@ -41,9 +21,6 @@ module Expressly
     
   end
     
-  ##
-  # Base class for representing enumerations 
-  #
   class Enumeration
   
     def Enumeration.const_missing(key)

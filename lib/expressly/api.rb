@@ -1,19 +1,6 @@
 module Expressly
-  ##
-  # This class is a http client for calls required to be made from the plug-in to the
-  # Expressly service. In general you should only need to use it for directly for
-  # the plug-in install / uninstall life-cycle.
-  #
   class Api
     
-    ##
-    # Construct the http client
-    #
-    # ==== Args
-    #
-    # * +apiKey+ - your expressly api key 
-    # * +endpoint+ - the expressly server endpoint - defaults to 'https://prod.expresslyapp.com/api'
-    #
     def initialize(apikey, endpoint = 'https://prod.expresslyapp.com/api')
       partitionedApiKey = apikey.partition(':')
       @merchantUuid = partitionedApiKey[0]
