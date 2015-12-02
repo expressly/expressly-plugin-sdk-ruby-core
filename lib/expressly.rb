@@ -18,16 +18,17 @@ module Expressly
   end
   
   class Configuration
-    attr_reader :api_key, :merchant_plugin_provider, :merchant_plugin_endpoint, :expressly_provider, :expressly_endpoint
-    attr_accessor :registered
+    attr_reader :api_key, 
+      :merchant_plugin_provider, :merchant_plugin_endpoint, :merchant_metadata,
+      :expressly_provider, :expressly_endpoint
     
-    def initialize(api_key, merchant_plugin_provider, merchant_plugin_endpoint, expressly_endpoint = 'https://prod.expresslyapp.com/api')
+    def initialize(api_key, merchant_plugin_provider, merchant_plugin_endpoint, merchant_metadata = {}, expressly_endpoint = 'https://prod.expresslyapp.com/api')
       @api_key = api_key
       @merchant_plugin_provider = merchant_plugin_provider
       @merchant_plugin_endpoint = merchant_plugin_endpoint
       @expressly_endpoint = expressly_endpoint
       @expressly_provider = Api.new(api_key, expressly_endpoint)
-      @registered = false
+      @merchant_metadata = merchant_metadata
     end
   end
 end

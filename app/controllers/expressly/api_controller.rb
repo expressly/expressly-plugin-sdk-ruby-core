@@ -3,6 +3,8 @@ module Expressly
     skip_before_action :verify_authenticity_token
 
     before_action :authenticate
+    skip_before_action :authenticate, only: [:display_popup, :migrate]
+
     def ping
       render content_type: "application/json", json: { "expressly" => "Stuff is happening!" }
     end
@@ -12,9 +14,12 @@ module Expressly
     end
 
     def customer_export
-      customer = provider.get_customer(params[:email])
-      render content_type: "application/json", json: { "what" => "customer_export" }
-
+      result = Expressly::CustomerExport.new({
+        :metadata => config.merchant_metadata,
+        :primary_email => params[:email],
+        :customer => provider.get_customer(params[:email])
+      })
+      render content_type: "application/json", json: JSON.parse(result.to_json)
     end
 
     def invoices
@@ -29,18 +34,31 @@ module Expressly
 
     def display_popup
       campaign_customer_uuid = params[:campaign_customer_uuid]
-      # get html
-      # forward to block in config
-
-      render content_type: "application/json", json: { "what" => "display_popup->#{campaign_customer_uuid}" }
+      provider.popup_handler(self, params[:campaign_customer_uuid])
     end
 
     def migrate
-      # migrate the user
-      # handle errors
-      # redirect_to_write_place
       campaign_customer_uuid = params[:campaign_customer_uuid]
-      render content_type: "application/json", json: { "what" => "customer_import->#{campaign_customer_uuid}" }
+      begin
+
+        import = config.expressly_provider.fetch_customer_data(campaign_customer_uuid)
+        customer_reference = provider.customer_register(import.primary_email, import.customer)
+        provider.customer_send_password_reset_email(customer_reference)
+        provider.customer_update_cart(customer_reference, import.cart)
+        provider.customer_login(customer_reference)
+        redirect_to provider.customer_migrated_redirect_url(true, customer_reference)
+
+        begin
+          config.expressly_provider.confirm_migration_success?(campaign_customer_uuid)
+        rescue Exception => e
+          Expressly::logger.warn(self) {
+            "couldn't finalise migration campaign_customer_uuid=[#{campaign_customer_uuid}], email=[#{import.primary_email}], error=[#{e.message}]"
+          }
+        end
+      rescue Expressly::ExpresslyError
+        # already migrated or invalid uuid so just redirect
+        redirect_to provider.customer_migrated_redirect_url(false)
+      end
     end
 
     def authenticate
