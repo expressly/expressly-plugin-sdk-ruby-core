@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    awesome_print (1.2.0)
     celluloid (0.15.2)
       timers (~> 1.1.0)
     coderay (1.1.0)
@@ -50,6 +51,7 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
+  awesome_print (~> 1.2.0)
   bundler
   guard
   guard-rspec

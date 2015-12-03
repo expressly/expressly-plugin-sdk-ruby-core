@@ -3,6 +3,7 @@ gem "bundler"
 group :development do
   require 'rbconfig'
   #gem 'fakeweb'
+  gem 'awesome_print', '~> 1.2.0'
   gem 'guard-rspec'
   gem 'guard'
   gem "rdoc", "~> 3.12"
