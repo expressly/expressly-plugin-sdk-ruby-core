@@ -1,5 +1,26 @@
 = Expressly Plug-in Ruby SDK
 
+{<img src="https://badge.fury.io/rb/expressly.svg" alt="Gem Version" />}[https://badge.fury.io/rb/expressly]
+
+The Expressly Ruby SDK provides as much of the heavy-lifting of the Expressly Network API to help developers wishing to
+integrate their rails e-commerce platform with the {Expressly network}[https://buyexpressly.com].
+
+== Getting Started
+
+gemfile::
+   gem 'expressly', '~> 2.0'
+
+install::
+   gem install expressly --pre
+
+You can find a Rails reference implementation {here}[https://github.com/expressly/expressly-plugin-rails-reference-implementation/blob/master/README.md]
+to help you get started.
+
+== More Info
+
+Further resources can be found on the Expressly {the developer portal}[http://developer.buyexpressly.com].
+
+== License
 
 Copyright (c) 2015 Expressly. See LICENSE.txt for further details.
 
