@@ -2,7 +2,7 @@ module Expressly
   module Version
     MAJOR = 2
     MINOR = 0
-    PATCH = 33
+    PATCH = 34
     BUILD = 'rc1'
 
     STRING = [MAJOR, MINOR, PATCH, BUILD].compact.join('.')
