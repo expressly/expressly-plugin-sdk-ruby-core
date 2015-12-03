@@ -2,7 +2,7 @@ gem "bundler"
 
 group :development do
   require 'rbconfig'
-  gem 'fakeweb'
+  #gem 'fakeweb'
   gem 'guard-rspec'
   gem 'guard'
   gem "rdoc", "~> 3.12"
