@@ -22,9 +22,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = "2.0.2"
   s.summary = "Expressly plug-in sdk"
 
-  s.add_development_dependency(%q<bundler>, [">= 0"])
-  s.add_development_dependency(%q<guard-rspec>, [">= 0"])
-  s.add_development_dependency(%q<guard>, [">= 0"])
-  s.add_development_dependency(%q<jeweler>, ["~> 1.8.4"])
+  s.add_development_dependency(%q<bundler>, ["~> 0"])
+  s.add_development_dependency(%q<guard-rspec>, ["~> 0"])
+  s.add_development_dependency(%q<guard>, ["~> 0"])
   s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
 end

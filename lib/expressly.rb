@@ -1,3 +1,5 @@
+require 'logger'
+
 module Expressly
   @@logger = Logger.new(STDERR)
   @@logger.level= Logger::Severity::INFO
@@ -32,8 +34,6 @@ module Expressly
     end
   end
 end
-
-require 'logger'
 
 require 'expressly/version'
 require 'expressly/util'
