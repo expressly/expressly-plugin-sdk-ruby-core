@@ -1,4 +1,5 @@
 gem "bundler"
+gem 'rake'
 
 group :development do
   require 'rbconfig'
