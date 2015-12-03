@@ -2,6 +2,7 @@
 = Expressly Plug-in Ruby SDK
 
 {<img src="https://badge.fury.io/rb/expressly.svg" alt="Gem Version" />}[https://badge.fury.io/rb/expressly]
+{<img src="https://api.travis-ci.org/expressly/expressly-plugin-sdk-ruby-core.png" alt="Build Status" />}[https://api.travis-ci.org/expressly/expressly-plugin-sdk-ruby-core]
 
 The Expressly Ruby SDK provides as much of the heavy-lifting of the Expressly Network API to help developers wishing to
 integrate their rails e-commerce platform with the {Expressly network}[https://buyexpressly.com].
