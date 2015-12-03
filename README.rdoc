@@ -1,3 +1,4 @@
+{<img src="https://badge.fury.io/rb/expressly]https://buyexpressly.com/assets/img/expressly-logo-sm-gray.png" alt="Expressly" />}[https://buyexpressly.com]
 = Expressly Plug-in Ruby SDK
 
 {<img src="https://badge.fury.io/rb/expressly.svg" alt="Gem Version" />}[https://badge.fury.io/rb/expressly]
@@ -18,7 +19,7 @@ to help you get started.
 
 == More Info
 
-Further resources can be found on the Expressly {the developer portal}[http://developer.buyexpressly.com].
+Further resources can be found on the {Expressly developer portal}[http://developer.buyexpressly.com].
 
 == License
 
