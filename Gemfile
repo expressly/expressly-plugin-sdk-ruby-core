@@ -6,5 +6,5 @@ group :development do
   gem 'guard-rspec'
   gem 'guard'
   gem "rdoc", "~> 3.12"
-  gem 'wdm', '>= 0.1.0' if RbConfig::CONFIG['target_os'] =~ /mswin|mingw/i
+  #gem 'wdm', '>= 0.1.0' if RbConfig::CONFIG['target_os'] =~ /mswin|mingw/i
 end

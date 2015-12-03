@@ -44,7 +44,6 @@ GEM
     slop (3.4.7)
     thor (0.18.1)
     timers (1.1.0)
-    wdm (0.1.1)
 
 PLATFORMS
   ruby
@@ -55,7 +54,6 @@ DEPENDENCIES
   guard
   guard-rspec
   rdoc (~> 3.12)
-  wdm (>= 0.1.0)
 
 BUNDLED WITH
    1.10.6
