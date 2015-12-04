@@ -33,7 +33,6 @@ module Expressly
     end
 
     def display_popup
-      campaign_customer_uuid = params[:campaign_customer_uuid]
       provider.popup_handler(self, params[:campaign_customer_uuid])
     end
 
@@ -50,7 +49,7 @@ module Expressly
 
         begin
           config.expressly_provider.confirm_migration_success?(campaign_customer_uuid)
-        rescue Exception => e
+        rescue StandardError => e
           Expressly::logger.warn(self) {
             "couldn't finalise migration campaign_customer_uuid=[#{campaign_customer_uuid}], email=[#{import.primary_email}], error=[#{e.message}]"
           }

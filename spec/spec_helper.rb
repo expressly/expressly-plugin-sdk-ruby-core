@@ -3,6 +3,8 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'rspec'
 require 'expressly'
 require 'awesome_print'
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.

@@ -31,7 +31,7 @@ module Expressly
       ObjectHelper.equals(self,object)
     end
 
-    def to_json(state = nil)
+    def to_json(_state = nil)
       JSON.generate({
         :meta => @metadata,
         :data => {
@@ -126,7 +126,7 @@ module Expressly
       datetime.nil? ? nil : DateTime.parse(datetime)
     end
 
-    def to_json(state = nil)
+    def to_json(_state = nil)
       JSON.generate({
         :firstName => @first_name,
         :lastName => @last_name,
@@ -194,7 +194,7 @@ module Expressly
       return list
     end
 
-    def to_json(state = nil)
+    def to_json(_state = nil)
       JSON.generate({
         :firstName => @first_name,
         :lastName => @last_name,
@@ -253,7 +253,7 @@ module Expressly
       return list
     end
 
-    def to_json(state = nil)
+    def to_json(_state = nil)
       JSON.generate({
         :type => @type.to_s,
         :number => @number,
@@ -298,7 +298,7 @@ module Expressly
       return list
     end
 
-    def to_json(state = nil)
+    def to_json(_state = nil)
       JSON.generate({
         :email => @email,
         :alias => @alias
@@ -339,7 +339,7 @@ module Expressly
       return list
     end
 
-    def to_json(state = nil)
+    def to_json(_state = nil)
       JSON.generate({
         :field => @type.to_s,
         :value => @identity
@@ -432,7 +432,7 @@ module Expressly
       @tax += order.tax.to_f
     end
 
-    def to_json(state = nil)
+    def to_json(_state = nil)
       JSON.generate(json_attribute_map)
     end
 
@@ -464,7 +464,7 @@ module Expressly
       @order_date = if order_date.is_a? Date then order_date else Date.parse(order_date) end
     end
 
-    def to_json(state = nil)
+    def to_json(_state = nil)
       JSON.generate({
         :id => @order_id,
         :date => @order_date,

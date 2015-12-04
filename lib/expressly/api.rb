@@ -9,7 +9,7 @@ module Expressly
     end
 
     def ping?
-      response = execute('/v1/merchant/ping', 'GET')
+      execute('/v1/merchant/ping', 'GET')
       return JSON.parse(response.body)['success']
     end
 
@@ -81,9 +81,7 @@ module Expressly
       is_json = response.content_type == "application/json"
       body = is_json ? JSON.parse(response.body) : response.body
 
-      raise (if is_json && !body['id'].nil? then
-        ExpresslyError.new(body) else
-        HttpError.new(response)  end)
+      raise (if is_json && !body['id'].nil? then ExpresslyError.new(body) else HttpError.new(response) end)
     end
 
     private :execute, :handle_error
