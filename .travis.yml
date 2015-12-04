@@ -3,6 +3,6 @@ rvm:
   - 2.1.6
   - 2.2.2
 
- addons:
-   code_climate:
-     repo_token: 4b7cb0837c0bcb22501262f1c463f02f189dbb510001c68e2e498db0e80f24bb
+addons:
+  code_climate:
+    repo_token: 4b7cb0837c0bcb22501262f1c463f02f189dbb510001c68e2e498db0e80f24bb
