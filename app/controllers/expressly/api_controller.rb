@@ -61,9 +61,9 @@ module Expressly
     end
 
     def authenticate
-      partitionedApiKey = config.api_key.partition(':')
+      partitioned_api_key = config.api_key.partition(':')
       authenticate_or_request_with_http_basic('expressly') do |username, password|
-        username == partitionedApiKey[0] && password == partitionedApiKey[2]
+        username == partitioned_api_key[0] && password == partitioned_api_key[2]
       end
     end
 

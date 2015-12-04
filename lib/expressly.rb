@@ -6,13 +6,14 @@ module Expressly
   
   def self.logger() @@logger end
   def self.logger=(logger) @@logger = logger end
-    
+
+  @@default_configuration = nil
   def self.default_configuration() 
     @@default_configuration 
   end
   
   def self.default_configuration?() 
-    !@@default_configuration.nil?
+    @@default_configuration != nil
   end
 
   ##

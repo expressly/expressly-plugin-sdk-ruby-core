@@ -3,7 +3,7 @@ gem 'rake'
 
 group :development do
   require 'rbconfig'
-  #gem 'fakeweb'
+  gem "fakeweb", "~> 1.3"
   gem 'awesome_print', '~> 1.2.0'
   gem 'guard-rspec'
   gem 'guard'

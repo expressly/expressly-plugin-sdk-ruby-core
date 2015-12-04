@@ -66,12 +66,11 @@ module Expressly
        
     end
     
-    protected
+
     def Enumeration.add_item(key,value)
       @hash ||= {}
       @hash[key]=value
     end
-    
   end
 
   module AbstractInterface

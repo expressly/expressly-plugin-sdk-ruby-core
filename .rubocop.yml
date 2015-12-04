@@ -802,7 +802,7 @@ Metrics/AbcSize:
                  branches, and conditions.
   Reference: 'http://c2.com/cgi/wiki?AbcMetric'
   Enabled: true
-  Max: 20
+  Max: 30
 
 Metrics/BlockNesting:
   Description: 'Avoid excessive block nesting'
@@ -1025,7 +1025,7 @@ Lint/UnusedBlockArgument:
 Lint/UnusedMethodArgument:
   Description: 'Checks for unused method arguments.'
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#underscore-unused-vars'
-  Enabled: true
+  Enabled: false
 
 Lint/UnreachableCode:
   Description: 'Unreachable code.'

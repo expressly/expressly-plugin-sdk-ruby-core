@@ -26,4 +26,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency(%q<guard-rspec>, ["~> 0"])
   s.add_development_dependency(%q<guard>, ["~> 0"])
   s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
+  s.add_development_dependency(%q<fakeweb>, ["~> 1.3"])
 end
