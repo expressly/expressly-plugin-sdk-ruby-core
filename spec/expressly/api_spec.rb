@@ -6,7 +6,7 @@ module Expressly
   api_key = '61c8c55e-9365-11e5-ac6c-281878baaac8:d62e517165bf86562d7fe0dbf8ac2076'
   api_url = 'http://localhost:8080/api'
   api = Expressly::Api.new(api_key, api_url)
-  FakeWeb.allow_net_connect = false
+  #FakeWeb.allow_net_connect = false
 
   describe "Api" do
 
