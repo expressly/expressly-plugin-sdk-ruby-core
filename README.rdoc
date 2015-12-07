@@ -2,7 +2,7 @@
 = Expressly Plug-in Ruby SDK
 
 {<img src="https://badge.fury.io/rb/expressly.svg" alt="Gem Version" />}[https://badge.fury.io/rb/expressly]
-{<img src="https://api.travis-ci.org/expressly/expressly-plugin-sdk-ruby-core.png" alt="Build Status" />}[https://api.travis-ci.org/expressly/expressly-plugin-sdk-ruby-core]
+{<img src="https://api.travis-ci.org/expressly/expressly-plugin-sdk-ruby-core.png" alt="Build Status" />}[https://travis-ci.org/expressly/expressly-plugin-sdk-ruby-core]
 {<img src="https://codeclimate.com/github/expressly/expressly-plugin-sdk-ruby-core/badges/gpa.svg" />}[https://codeclimate.com/github/expressly/expressly-plugin-sdk-ruby-core]
 {<img src="https://codeclimate.com/github/expressly/expressly-plugin-sdk-ruby-core/badges/coverage.svg" />}[https://codeclimate.com/github/expressly/expressly-plugin-sdk-ruby-core/coverage]
 
@@ -28,3 +28,7 @@ Further resources can be found on the {Expressly developer portal}[http://develo
 
 Copyright (c) 2015 Expressly. See LICENSE.txt for further details.
 
+== One-click customer acquisition
+
+Expressly helps merchants grow by attracting new quality visitors from other online shops where people already buy,
+while making it extremely convenient for them to convert to the new shop.
