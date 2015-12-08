@@ -1,4 +1,5 @@
 require 'logger'
+require 'base64'
 
 module Expressly
   @@logger = Logger.new(STDERR)
@@ -47,7 +48,7 @@ module Expressly
     # * +expressly_endpoint+ - the Expressly server endpoint. Defaults to the Expressly production service.
     #
     def initialize(api_key, merchant_plugin_provider, merchant_plugin_endpoint, merchant_metadata = {}, expressly_endpoint = 'https://prod.expresslyapp.com/api')
-      @api_key = api_key
+      @api_key = api_key.include?(":") ? api_key : Base64.strict_decode64(api_key)
       @merchant_plugin_provider = merchant_plugin_provider
       @merchant_plugin_endpoint = merchant_plugin_endpoint
       @expressly_endpoint = expressly_endpoint

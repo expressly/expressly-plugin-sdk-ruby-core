@@ -4,10 +4,12 @@ require 'expressly'
 
 module Expressly
 
+  encoded_api_key = Base64.strict_encode64('api_key')
+
   describe "Expressly" do
     it "can have a default config set" do
       config = Configuration.new(
-          'api_key',
+          encoded_api_key,
           'merchant_plugin_provider',
           'merchant_plugin_endpoint')
 
@@ -25,13 +27,13 @@ module Expressly
   describe "Configuration" do
     it "is initialised correctly" do
       config = Configuration.new(
-          'api_key',
+          'api_key:api_key',
           'merchant_plugin_provider',
           'merchant_plugin_endpoint',
           'merchant_metadata',
           'expressly_endpoint')
 
-      config.api_key.should == 'api_key'
+      config.api_key.should == 'api_key:api_key'
       config.merchant_plugin_provider.should == 'merchant_plugin_provider'
       config.merchant_plugin_endpoint.should == 'merchant_plugin_endpoint'
       config.merchant_metadata.should == 'merchant_metadata'
@@ -40,7 +42,7 @@ module Expressly
 
     it "is initialised correctly with defaults" do
       config = Configuration.new(
-          'api_key',
+          encoded_api_key,
           'merchant_plugin_provider',
           'merchant_plugin_endpoint')
 
