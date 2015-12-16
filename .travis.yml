@@ -1,8 +1,11 @@
 rvm:
-  - 1.9.3
-  - 2.1.6
-  - 2.2.2
-
+- 1.9.3
+- 2.1.6
+- 2.2.2
 addons:
   code_climate:
     repo_token: 4b7cb0837c0bcb22501262f1c463f02f189dbb510001c68e2e498db0e80f24bb
+notifications:
+  hipchat:
+    rooms:
+      secure: a34ZhAhOnj1e+eZhQXDbFWZub6pUHNlnzAkk1c4aIVXTiGXshnON9lEI259ZkAFuVjNfQTlKHiuLBsWikpaWtzYFZhoKbNijRf1JTeClCI4gtlVN2/XI3HKVvRJXNqoeYxQ15MCIq/oFgIWMBRJucVeb9XkSO5O24QgPDaAuHiuIZTQNC2hHSjKek8eY9B1mwceQzxH8WUZiUo4MdFfVtWrHDaE+TPpso/6hcb1V9vPs17IIxBEr55nX2t3wXjvWNAvnk0A8AJcr2EZX7ORq0Ptn9pYW9uHTf+hQT6Qz+ZPrAjOubZSGjYHN/CH3jRUHbFY7f0ONZQxnA0A+3RgIPHx1fStt7cbPTbKSc+T7/Otxf8wOMyuv/NyHLqjPwd3LUHUwCi3MntrP55cP6m1dKu9yCc7C6GxFpiI7mjAog/VTxdxaeUk+A6UT8ZYhNzey8tCbx9SxioLOI2RyKpYduFle5MGDpAENldiThypRVuOUj8s/IH5s+KNS1bALOObFNi34/jcczF55UA3/yYkhpDEln6JXD3MH+AVEDLIQvTBkMyn3yhYst/Yn4TDJjWC3mqxDN7niJcVCUaGRJx1uqj97WD0UUI1jhqspWEvO1qtq039TE5B8PBAHUcYfNo9alLvBt0b422Yu0gzwryBtscJB/PIUxkkndfXlMy/gqWk=
