@@ -5,12 +5,14 @@ module Expressly
     before_action :authenticate
     skip_before_action :authenticate, only: [:display_popup, :migrate]
 
-    def ping
-      render content_type: "application/json", json: { "expressly" => "Stuff is happening!" }
-    end
-
     def registered
-      render content_type: "application/json", json: { "registered" => true }
+      render content_type: "application/json", json: {
+          :registered => true,
+          :version => 'V2',
+          :lightbox => 'javascript',
+          :platformName => 'ExpresslyRubySdk',
+          :platformVersion => Expressly::Version::STRING
+      }
     end
 
     def customer_export
@@ -34,10 +36,6 @@ module Expressly
       render content_type: "application/json", json: result
     end
 
-    def display_popup
-      provider.popup_handler(self, params[:campaign_customer_uuid])
-    end
-
     def migrate
       campaign_customer_uuid = params[:campaign_customer_uuid]
       begin
@@ -50,7 +48,6 @@ module Expressly
         provider.customer_login(customer_reference)
         redirect_to "#{config.expressly_endpoint}/redirect/migration/#{campaign_customer_uuid}/success"
       rescue Expressly::ExpresslyError
-        # already migrated or invalid uuid so just redirect
         redirect_to "#{config.expressly_endpoint}/redirect/migration/#{campaign_customer_uuid}/failed"
       end
     end

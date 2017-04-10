@@ -9,33 +9,6 @@ module Expressly
     include AbstractInterface
     
     ##
-    # The popup_handler is called when a prospective customer has clicked on a campaign promotion 
-    # and been directed to your shop. You are required to make a call to retrieve the expressly popup html
-    # and embed it on the landing page of your choice.
-    #
-    # The typical flow would be:
-    #
-    # 1. customer clicks a promotion link to https://yourshop.com/expressly/api/:campaign_customer_uuid
-    # 2. ApiController call popup_handler with itself as the first parameter and the uuid as the second parameter
-    # 3. The handler should through a mechanism of their choice should display an appropriate page on their site and embed the Expressly popup HTML
-    #
-    # The mechanics of how to acheive step 3 is up to the implementer. The Expressly popup HTML is retrieved with the following call:
-    # Expressly::default_configuration.expressly_provider.fetch_migration_confirmation_html(campaign_customer_uuid)
-    #
-    # === Args
-    #
-    # * +controller+ - an ApplicationController instance
-    # * +campaign_customer_uuid+ - the Expressly uuid identifying the customer to be migrated
-    #
-    # === Return
-    #
-    # N/A
-    #
-    def popup_handler(controller, campaign_customer_uuid)
-      MerchantPluginProvider.api_not_implemented(self)
-    end
-
-    ##
     # The customer register is the first step of the migration process after they have confirmed that they want to proceed.
     # You should register the customer on you system when you receive this call. You should treat this as a new customer,
     # i.e. send them a welcome email etc.
@@ -98,23 +71,6 @@ module Expressly
     # N/A
     #
     def customer_login(customer_reference)
-      MerchantPluginProvider.api_not_implemented(self)
-    end
-
-    ##
-    # Once the customer is migrated they will need to be re-directed to the most appropriate location on your site.
-    # This could be the home page or the checkout.
-    #
-    # === Args
-    #
-    # * +success+ - if true then the customer was successfully migrated, if false then it failed and customer_reference will be nil
-    # * +customer_reference+ - the reference you returned in the customer_register call unless the migration failed, in which case it will be nil
-    #
-    # === Return
-    #
-    # N/A
-    #
-    def customer_migrated_redirect_url(success, customer_reference)
       MerchantPluginProvider.api_not_implemented(self)
     end
 

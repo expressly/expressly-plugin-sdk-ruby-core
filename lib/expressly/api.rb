@@ -8,45 +8,11 @@ module Expressly
       @endpoint = endpoint
     end
 
-    def ping?
-      response = execute('/v1/merchant/ping', 'GET')
-      JSON.parse(response.body)['success']
-    end
-
-    def install(base_url)
-      api_key = Base64.strict_encode64("#{@merchant_uuid}:#{@secret_key}")
-      execute(
-        '/v2/plugin/merchant', 
-        'POST', 
-        "{\"apiBaseUrl\":\"#{base_url}\", \"apiKey\":\"#{api_key}\"}")
-    end
-
-    def uninstall?
-      response = execute(
-        "/v2/plugin/merchant/#{@merchant_uuid}", 
-        'DELETE')
-      JSON.parse(response.body)['success']
-    end
-
-    def fetch_migration_confirmation_html(campaign_customer_uuid)
-      response = execute(
-        "/v2/migration/#{campaign_customer_uuid}", 
-        'GET')
-      response.body
-    end
-
     def fetch_customer_data(campaign_customer_uuid)
       response = execute(
         "/v2/migration/#{campaign_customer_uuid}/user", 
         'GET')
       CustomerImport.from_json(JSON.parse(response.body))
-    end
-
-    def confirm_migration_success?(campaign_customer_uuid)
-      response = execute(
-        "/v2/migration/#{campaign_customer_uuid}/success", 
-        'POST')
-      JSON.parse(response.body)['success']
     end
 
     def execute(method_uri, http_verb, body = nil, limit = 4)
