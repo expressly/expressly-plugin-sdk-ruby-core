@@ -52,7 +52,7 @@ module Expressly
       @merchant_plugin_provider = merchant_plugin_provider
       @merchant_plugin_endpoint = merchant_plugin_endpoint
       @expressly_endpoint = expressly_endpoint
-      @expressly_provider = Api.new(api_key, expressly_endpoint)
+      @expressly_provider = Api.new(@api_key, expressly_endpoint)
       @merchant_metadata = merchant_metadata
     end
   end

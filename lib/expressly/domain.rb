@@ -471,9 +471,9 @@ module Expressly
         :itemCount => @item_count.to_i,
         :coupon => @coupon_code,
         :currency => @currency,
-        :preTaxTotal => @pre_tax_total.to_f,
-        :postTaxTotal => @post_tax_total.to_f,
-        :tax => @tax.to_f})
+        :preTaxTotal => '%.2f' % @pre_tax_total.to_f,
+        :postTaxTotal => '%.2f' % @post_tax_total.to_f ,
+        :tax => '%.2f' % @tax.to_f})
     end
   end
 

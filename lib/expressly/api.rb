@@ -49,7 +49,10 @@ module Expressly
       JSON.parse(response.body)['success']
     end
 
-    def execute(method_uri, http_verb, body = nil)
+    def execute(method_uri, http_verb, body = nil, limit = 4)
+      raise 'too many HTTP redirects' if limit == 0
+      puts method_uri
+
       uri = URI.parse("#{@endpoint}#{method_uri}")
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = @endpoint.start_with?('https')
@@ -70,11 +73,15 @@ module Expressly
 
       response = http.request(request)
 
-      if response.code.to_i >= 300
-        handle_error(response)
+      case response
+        when Net::HTTPSuccess then
+          response
+        when Net::HTTPRedirection then
+          location = response['location']
+          execute(location, http_verb, body,limit - 1)
+        else
+          handle_error(response)
       end
-
-      response
     end
 
     def handle_error(response)
