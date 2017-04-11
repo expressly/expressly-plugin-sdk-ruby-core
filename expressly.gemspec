@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version = Expressly::Version::STRING
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Marc G. Smith"]
-  s.date = "2015-12-01"
+  s.date = "2017-04-11"
   s.description = "Expressly sdk to help with implementing the expressly e-commerce plug-in / module API"
   s.email = "marc@buyexpressly.com"
   s.extra_rdoc_files = [
@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://developer.buyexpressly.com"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "2.0.2"
+  s.rubygems_version = "2.6.11"
   s.summary = "Expressly plug-in sdk"
 
   s.add_development_dependency(%q<bundler>, ["~> 0"])
