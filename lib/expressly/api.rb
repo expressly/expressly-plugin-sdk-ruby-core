@@ -17,7 +17,6 @@ module Expressly
 
     def execute(method_uri, http_verb, body = nil, limit = 4)
       raise 'too many HTTP redirects' if limit == 0
-      puts method_uri
 
       uri = URI.parse("#{@endpoint}#{method_uri}")
       http = Net::HTTP.new(uri.host, uri.port)

@@ -427,9 +427,9 @@ module Expressly
     def add_order(order)
       order.freeze
       @orders << order
-      @pre_tax_total += order.pre_tax_total.to_f
-      @post_tax_total += order.post_tax_total.to_f
-      @tax += order.tax.to_f
+      @pre_tax_total += (order.pre_tax_total.to_f * 100).round / 100.0
+      @post_tax_total += (order.post_tax_total.to_f * 100).round / 100.0
+      @tax += (order.tax.to_f * 100).round / 100.0
     end
 
     def to_json(_state = nil)
@@ -471,9 +471,9 @@ module Expressly
         :itemCount => @item_count.to_i,
         :coupon => @coupon_code,
         :currency => @currency,
-        :preTaxTotal => '%.2f' % @pre_tax_total.to_f,
-        :postTaxTotal => '%.2f' % @post_tax_total.to_f ,
-        :tax => '%.2f' % @tax.to_f})
+        :preTaxTotal => (@pre_tax_total.to_f * 100).round / 100.0,
+        :postTaxTotal => (@post_tax_total.to_f * 100).round / 100.0,
+        :tax => (@tax.to_f * 100).round / 100.0})
     end
   end
 

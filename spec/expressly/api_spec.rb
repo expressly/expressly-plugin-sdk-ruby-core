@@ -10,30 +10,6 @@ module Expressly
 
   describe "Api" do
 
-    it "can ping" do
-      FakeWeb.register_uri(:get, "http://#{api_key}@localhost:8080/api/v1/merchant/ping",
-                           :body => '{"success":true,"msg":"61c8c55e-9365-11e5-ac6c-281878baaac8"}')
-      api.ping?.should == true
-    end
-
-    it "it can install" do
-      FakeWeb.register_uri(:post, "http://#{api_key}@localhost:8080/api/v2/plugin/merchant",
-                           :status => ["204", "No Content"])
-      api.install("http://localhost:3000")
-    end
-
-    it "it can uninstall" do
-      FakeWeb.register_uri(:delete, "http://#{api_key}@localhost:8080/api/v2/plugin/merchant/#{merchant_uuid}",
-                           :body => '{"success":true,"msg":"Merchant uninstalled"}')
-      api.uninstall?.should == true
-    end
-
-    it "it can fetch poup html" do
-      FakeWeb.register_uri(:get, "http://#{api_key}@localhost:8080/api/v2/migration/#{campaign_customer_uuid}",
-                           :body => '<b>pop</b>')
-      response = api.fetch_migration_confirmation_html(campaign_customer_uuid)
-      response.should == '<b>pop</b>'
-    end
 
     it "it can fetch customer data" do
       FakeWeb.register_uri(:get, "http://#{api_key}@localhost:8080/api/v2/migration/#{campaign_customer_uuid}/user",
@@ -71,15 +47,8 @@ module Expressly
       customer_import.customer.address_list[0].country.should == 'GB'
     end
 
-    it "it can report the migration was successful" do
-      FakeWeb.register_uri(:post, "http://#{api_key}@localhost:8080/api/v2/migration/#{campaign_customer_uuid}/success",
-                           :body => '{"success":true,"msg":"User registered as migrated"}')
-      response = api.confirm_migration_success?(campaign_customer_uuid)
-      response.should == true
-    end
-
     it "it can parse the expressly error payload" do
-      FakeWeb.register_uri(:get, "http://#{api_key}@localhost:8080/api/v1/merchant/ping",
+      FakeWeb.register_uri(:get, "http://#{api_key}@localhost:8080/api/v2/migration/xxxx/user",
                            :status => ["400", "Bad Request"],
                            :content_type => "application/json",
                            :body => '{' +
@@ -90,7 +59,7 @@ module Expressly
                                '"causes":["cause"],' +
                                '"actions":["action"]}')
       begin
-        api.ping?
+        api.fetch_customer_data('xxxx')
       rescue ExpresslyError => e
         e.id.should == 'tid'
         e.message.should == 'Bad Request'
@@ -102,11 +71,11 @@ module Expressly
     end
 
     it "if it can parse the expressly error payload it will throw an http error" do
-      FakeWeb.register_uri(:get, "http://#{api_key}@localhost:8080/api/v1/merchant/ping",
+      FakeWeb.register_uri(:get, "http://#{api_key}@localhost:8080/api/v2/migration/xxxx/user",
                            :status => ["400", "Bad Request"],
                            :body => 'WOW')
       begin
-        api.ping?
+        api.fetch_customer_data('xxxx')
       rescue HttpError => e
         e.code.should == "400"
         e.body.should == 'WOW'
