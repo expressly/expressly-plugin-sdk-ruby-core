@@ -1,4 +1,4 @@
-{<img src="https://buyexpressly.com/assets/img/expressly-logo-sm-gray.png" alt="Expressly" />}[https://buyexpressly.com]
+{<img src="http://developer.buyexpressly.com/img/expressly-logo-sm-gray.png" alt="Expressly" />}[https://buyexpressly.com]
 
 = Expressly Plug-in Ruby SDK
 
